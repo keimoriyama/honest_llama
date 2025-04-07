@@ -7,8 +7,6 @@ import numpy as np
 import pickle
 import sys
 sys.path.append('../')
-
-import llama
 import pickle
 import argparse
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
@@ -74,6 +72,7 @@ def main():
 
     collectors = []
     pv_config = []
+    import ipdb;ipdb.set_trace()
     for layer in range(model.config.num_hidden_layers): 
         collector = Collector(multiplier=0, head=-1) #head=-1 to collect all head activations, multiplier doens't matter
         collectors.append(collector)
