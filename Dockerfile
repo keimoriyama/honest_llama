@@ -58,8 +58,8 @@ COPY --chmod=777 pyproject.toml uv.lock ./
 
 RUN uv sync
 
-ENV PATH="/app/.venv/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
+RUN uv pip install -r get_activations/TruthfulQA/requirements.txt
 
-RUN python -m nltk.downloader all
+ENV PATH="/app/.venv/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
 
 CMD ["/bin/bash"]
