@@ -54,11 +54,13 @@ USER appuser
 
 WORKDIR ${APP_DIR}
 
-COPY --chmod=777 pyproject.toml uv.lock ./
+COPY --chmod=777 pyproject.toml uv.lock TruthfulQA/requirements.txt .python-version ./
 
 RUN uv sync
 
-RUN uv pip install -r get_activations/TruthfulQA/requirements.txt
+RUN uv pip install git+https://github.com/davidbau/baukit
+
+RUN uv pip install -r requirements.txt
 
 ENV PATH="/app/.venv/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
 
