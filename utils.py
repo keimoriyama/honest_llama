@@ -1,30 +1,26 @@
 # Utils to work with pyvene
 
-import os
 import sys
 
 sys.path.insert(0, "TruthfulQA")
 
 import pickle
 import warnings
-from functools import partial
 
 import numpy as np
 # import llama
 import pandas as pd
-import sklearn
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-from baukit import Trace, TraceDict
+from baukit import TraceDict
 # import llama
 from datasets import load_dataset
-from einops import rearrange
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (accuracy_score, f1_score, precision_score,
-                             recall_score)
+from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
+
+from presets import preset_map
 
 # from truthfulqa import utilities, models, metrics
 # import openai
@@ -43,18 +39,6 @@ ENGINE_MAP = {
     "llama3_70B": "meta-llama/Meta-Llama-3-70B",
     "llama3_70B_instruct": "meta-llama/Meta-Llama-3-70B-Instruct",
 }
-
-# from truthfulqa.utilities import (
-#     format_prompt,
-#     format_prompt_with_answer_strings,
-#     split_multi_answer,
-#     format_best,
-#     find_start,
-# )
-from presets import preset_map
-
-# from truthfulqa.models import find_subsequence, set_columns, MC_calcs
-# from truthfulqa.evaluate import format_frame, data_to_dict
 
 
 def format_prompt(ser, preset="qa", format="general"):

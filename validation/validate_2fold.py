@@ -299,7 +299,8 @@ def main():
             filename += "_com"
         if args.use_random_dir:
             filename += "_random"
-
+        Path("results_dump/answer_dump/").mkdir(parents=True, exist_ok=True)
+        Path("results_dump/summary_dump/").mkdir(parents=True, exist_ok=True)
         curr_fold_results = alt_tqa_evaluate(
             models={args.model_name: intervened_model},
             metric_names=["info", "mc"],
