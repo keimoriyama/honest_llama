@@ -53,9 +53,7 @@ USER appuser
 
 WORKDIR ${APP_DIR}
 
-COPY --chmod=777 pyproject.toml uv.lock TruthfulQA/requirements.txt .python-version ./
-
-RUN uv pip install -r requirements.txt
+COPY --chmod=777 pyproject.toml uv.lock .python-version ./
 
 RUN uv sync
 
