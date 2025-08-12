@@ -57,7 +57,7 @@ def main():
         torch_dtype=torch.float16,
         device_map="auto",
     )
-    device = "cpu"
+    device = "cuda"
 
     if args.dataset_name == "tqa_mc2":
         dataset = load_dataset("truthfulqa/truthful_qa", "multiple_choice")[
