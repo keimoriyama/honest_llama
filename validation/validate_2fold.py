@@ -174,7 +174,7 @@ def main():
 
     # load activations
     head_wise_activations = np.load(
-        f"../features/{args.model_name}_{args.dataset_name}_head_wise.npy"
+        f"./features/{args.model_name}_{args.dataset_name}_head_wise.npy"
     )
     labels = np.load(f"../features/{args.model_name}_{args.dataset_name}_labels.npy")
     head_wise_activations = rearrange(
@@ -188,13 +188,13 @@ def main():
         else args.activations_dataset
     )
     tuning_activations = np.load(
-        f"../features/{args.model_name}_{activations_dataset}_head_wise.npy"
+        f"./features/{args.model_name}_{activations_dataset}_head_wise.npy"
     )
     tuning_activations = rearrange(
         tuning_activations, "b l (h d) -> b l h d", h=num_heads
     )
     tuning_labels = np.load(
-        f"../features/{args.model_name}_{activations_dataset}_labels.npy"
+        f"./features/{args.model_name}_{activations_dataset}_labels.npy"
     )
 
     separated_head_wise_activations, separated_labels, idxs_to_split_at = (
