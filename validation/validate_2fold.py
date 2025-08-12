@@ -120,7 +120,7 @@ def main():
     np.random.seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
 
-    df = pd.read_csv("../TruthfulQA/TruthfulQA.csv")
+    df = pd.read_csv("./TruthfulQA/TruthfulQA.csv")
     # hand fixing some inconsistency between the csv version from github and the one from the huggingface dataset
     df.loc[164] = {
         "Type": "Adversarial",
