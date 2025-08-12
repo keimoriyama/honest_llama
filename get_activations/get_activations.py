@@ -13,9 +13,14 @@ from tqdm import tqdm
 from transformers import AutoModel, AutoModelForCausalLM, AutoTokenizer
 
 from interveners import Collector, ITI_Intervener, wrapper
+
 # Specific pyvene imports
-from utils import (get_llama_activations_pyvene, tokenized_tqa,
-                   tokenized_tqa_gen, tokenized_tqa_gen_end_q)
+from utils import (
+    get_llama_activations_pyvene,
+    tokenized_tqa,
+    tokenized_tqa_gen,
+    tokenized_tqa_gen_end_q,
+)
 
 HF_NAMES = {
     # 'llama_7B': 'baffo32/decapoda-research-llama-7B-hf',
