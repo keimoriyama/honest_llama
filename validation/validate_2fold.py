@@ -10,7 +10,7 @@ from datasets import load_dataset
 from einops import rearrange
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-sys.path.append("../")
+sys.path.append("./")
 import pyvene as pv
 
 from interveners import ITI_Intervener, wrapper
@@ -176,7 +176,7 @@ def main():
     head_wise_activations = np.load(
         f"./features/{args.model_name}_{args.dataset_name}_head_wise.npy"
     )
-    labels = np.load(f"../features/{args.model_name}_{args.dataset_name}_labels.npy")
+    labels = np.load(f"./features/{args.model_name}_{args.dataset_name}_labels.npy")
     head_wise_activations = rearrange(
         head_wise_activations, "b l (h d) -> b l h d", h=num_heads
     )
