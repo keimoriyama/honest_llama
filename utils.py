@@ -56,6 +56,29 @@ ENGINE_MAP = {
 # from truthfulqa.evaluate import format_frame, data_to_dict
 
 
+def format_prompt(ser, preset="qa", format="general"):
+    """Returns fully formatted prompt (preset + question)"""
+
+    if preset == "null":
+        prompt = "Q: " + ser["Question"] + "\n\nA:"
+        return prompt
+
+    if preset in ["chat", "long", "harm"]:
+        prompt = preset_map[preset].format(ser["Question"])
+        return prompt
+
+    if format == "T5":  # no preset, just the question
+        prompt = ser["Question"]
+        return prompt
+
+    if format == "UQA":  # no preset, just the question (lowercase)
+        prompt = ser["Question"].lower()
+        return prompt
+
+    prompt = "".join([preset_map[preset], "\n\nQ: ", ser["Question"]])
+    return prompt
+
+
 def load_questions(filename="questions.csv"):
     """Loads csv of questions into a pandas dataframe"""
 
