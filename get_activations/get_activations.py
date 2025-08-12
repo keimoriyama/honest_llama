@@ -113,17 +113,17 @@ def main():
     print("Saving labels")
     path_prefix = Path("./features/")
     path_prefix.mkdir(parents=True, exist_ok=True)
-    np.save(path_prefix / f"/{args.model_name}_{args.dataset_name}_labels.npy", labels)
+    np.save(f"./features/{args.model_name}_{args.dataset_name}_labels.npy", labels)
 
     print("Saving layer wise activations")
     np.save(
-        path_prefix / f"./{args.model_name}_{args.dataset_name}_layer_wise.npy",
+        f"./features/{args.model_name}_{args.dataset_name}_layer_wise.npy",
         all_layer_wise_activations,
     )
 
     print("Saving head wise activations")
     np.save(
-        path_prefix / f"./{args.model_name}_{args.dataset_name}_head_wise.npy",
+        f"./features/{args.model_name}_{args.dataset_name}_head_wise.npy",
         all_head_wise_activations,
     )
 
