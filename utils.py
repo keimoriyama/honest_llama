@@ -51,7 +51,8 @@ ENGINE_MAP = {
 #     format_best,
 #     find_start,
 # )
-# from truthfulqa.presets import preset_map, COMPARE_PRIMER
+from presets import preset_map
+
 # from truthfulqa.models import find_subsequence, set_columns, MC_calcs
 # from truthfulqa.evaluate import format_frame, data_to_dict
 
