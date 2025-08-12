@@ -723,9 +723,6 @@ def alt_tqa_evaluate(
     questions = load_questions(filename=input_path)
 
     print("ASSUMES OPENAI_API_KEY ENVIRONMENT VARIABLE IS SET")
-    import os
-
-    openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     for mdl in models.keys():
         # gpt-3
@@ -782,7 +779,7 @@ def alt_tqa_evaluate(
                     many_shot_prefix=many_shot_prefix,
                 )
 
-            utilities.save_questions(questions, output_path)
+            save_questions(questions, output_path)
 
             if "mc" in metric_names:
                 questions = tqa_run_probs(
@@ -800,7 +797,7 @@ def alt_tqa_evaluate(
                     instruction_prompt=instruction_prompt,
                     many_shot_prefix=many_shot_prefix,
                 )
-                utilities.save_questions(questions, output_path)
+                save_questions(questions, output_path)
 
         # gpt-neo
         if mdl in ["neo-small", "neo-med", "neo-large"]:
@@ -813,7 +810,7 @@ def alt_tqa_evaluate(
                     device=device,
                     cache_dir=cache_dir,
                 )
-                utilities.save_questions(questions, output_path)
+                save_questions(questions, output_path)
                 if "mc" in metric_names:
                     models.run_probs(
                         questions,
@@ -823,7 +820,7 @@ def alt_tqa_evaluate(
                         device=device,
                         cache_dir=cache_dir,
                     )
-                    utilities.save_questions(questions, output_path)
+                    save_questions(questions, output_path)
             except Exception as err:
                 print("ERROR")
                 print(err)
@@ -868,7 +865,7 @@ def alt_tqa_evaluate(
             elif metric in ["bleu", "rouge"]:
                 try:
                     questions = metrics.run_bleu_and_rouge(model_key, questions)
-                    utilities.save_questions(questions, output_path)
+                    save_questions(questions, output_path)
                 except Exception as err:
                     print(err)
             elif metric in ["judge", "info"]:
@@ -877,12 +874,12 @@ def alt_tqa_evaluate(
                         questions = metrics.run_end2end_GPT3(
                             model_key, "GPT-judge", judge_name, questions, info=False
                         )
-                        utilities.save_questions(questions, output_path)
+                        save_questions(questions, output_path)
                     else:
                         questions = metrics.run_end2end_GPT3(
                             model_key, "GPT-info", info_name, questions, info=True
                         )
-                        utilities.save_questions(questions, output_path)
+                        save_questions(questions, output_path)
                 except Exception as err:
                     print(err)
             else:
