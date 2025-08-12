@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -217,6 +218,7 @@ def main():
         val_set_idxs = np.array([x for x in train_idxs if x not in train_set_idxs])
 
         # save train and test splits
+        Path("splits/").mkdir(parents=True, exist_ok=True)
         df.iloc[train_set_idxs].to_csv(
             f"splits/fold_{i}_train_seed_{args.seed}.csv", index=False
         )
