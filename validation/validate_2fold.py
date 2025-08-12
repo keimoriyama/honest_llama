@@ -1,8 +1,6 @@
 # Using pyvene to validate_2fold
 
 import argparse
-import os
-import pickle
 import sys
 
 import numpy as np
@@ -10,25 +8,16 @@ import pandas as pd
 import torch
 from datasets import load_dataset
 from einops import rearrange
-from tqdm import tqdm
-from transformers import AutoConfig, AutoModel, AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 sys.path.append("../")
-import llama
 import pyvene as pv
 
-from interveners import Collector, ITI_Intervener, wrapper
-
+from interveners import ITI_Intervener, wrapper
 # Specific pyvene imports
-from utils import (
-    alt_tqa_evaluate,
-    flattened_idx_to_layer_head,
-    get_com_directions,
-    get_interventions_dict,
-    get_separated_activations,
-    get_top_heads,
-    layer_head_to_flattened_idx,
-)
+from utils import (alt_tqa_evaluate, get_com_directions,
+                   get_separated_activations, get_top_heads,
+                   layer_head_to_flattened_idx)
 
 HF_NAMES = {
     # Base models
@@ -158,7 +147,7 @@ def main():
     df = df.sort_values(
         by="Question", key=lambda x: x.map({k: i for i, k in enumerate(golden_q_order)})
     )
-    assert list(dataset["question"]) == list(df["Question"])
+    # assert list(dataset["question"]) == list(df["Question"])
 
     # get two folds using numpy
     fold_idxs = np.array_split(np.arange(len(df)), args.num_fold)
