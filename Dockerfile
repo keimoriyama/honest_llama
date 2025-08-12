@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu22.04 # `tzdata` requires noninteractive mode.
+FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu22.04
 
 ARG USER_ID=1022 ARG GROUP_ID=1022 ARG DEBIAN_FRONTEND=noninteractive ARG PYTHON_VERSION=3.11
 
