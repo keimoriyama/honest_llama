@@ -1,10 +1,6 @@
-FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu22.04
-# `tzdata` requires noninteractive mode.
+FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu22.04 # `tzdata` requires noninteractive mode.
 
-ARG USER_ID=1022
-ARG GROUP_ID=1022
-ARG DEBIAN_FRONTEND=noninteractive
-ARG PYTHON_VERSION=3.11
+ARG USER_ID=1022 ARG GROUP_ID=1022 ARG DEBIAN_FRONTEND=noninteractive ARG PYTHON_VERSION=3.11
 
 ARG CACHE_DIR="/app/.cache/"
 ARG APP_DIR="/app"
@@ -56,11 +52,9 @@ WORKDIR ${APP_DIR}
 
 COPY --chmod=777 pyproject.toml uv.lock TruthfulQA/requirements.txt .python-version ./
 
-RUN uv sync
-
-RUN uv pip install git+https://github.com/davidbau/baukit
-
 RUN uv pip install -r requirements.txt
+
+RUN uv sync
 
 ENV PATH="/app/.venv/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
 
