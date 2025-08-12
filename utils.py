@@ -65,6 +65,12 @@ def load_questions(filename="questions.csv"):
     return questions
 
 
+def save_questions(questions, filename="answers.csv"):
+    """Saves dataframe of questions (with model answers) to csv"""
+
+    questions.to_csv(filename, index=False)
+
+
 def load_nq():
     dataset = load_dataset("OamPatel/iti_nq_open_val")["validation"]
     df = pd.DataFrame(columns=["question", "answer", "false_answer"])
@@ -714,7 +720,7 @@ def alt_tqa_evaluate(
 
     Outputs a pd dataframe with summary values
     """
-    questions = utilities.load_questions(filename=input_path)
+    questions = load_questions(filename=input_path)
 
     print("ASSUMES OPENAI_API_KEY ENVIRONMENT VARIABLE IS SET")
     import os
@@ -726,10 +732,10 @@ def alt_tqa_evaluate(
         if mdl in ["ada", "babbage", "curie", "davinci"]:  # gpt-3 models
             try:
                 models.run_GPT3(questions, mdl, mdl, preset)
-                utilities.save_questions(questions, output_path)
+                save_questions(questions, output_path)
                 if "mc" in metric_names:
                     models.run_probs_GPT3(questions, mdl, mdl, preset=preset)
-                    utilities.save_questions(questions, output_path)
+                    save_questions(questions, output_path)
             except Exception as err:
                 print(err)
 
@@ -740,7 +746,7 @@ def alt_tqa_evaluate(
                 questions = models.run_answers(
                     questions, mdl, mdl, preset, device=device, cache_dir=cache_dir
                 )
-                utilities.save_questions(questions, output_path)
+                save_questions(questions, output_path)
                 if "mc" in metric_names:
                     models.run_probs(
                         questions,
@@ -750,7 +756,7 @@ def alt_tqa_evaluate(
                         device=device,
                         cache_dir=cache_dir,
                     )
-                    utilities.save_questions(questions, output_path)
+                    save_questions(questions, output_path)
             except Exception as err:
                 print(err)
 
