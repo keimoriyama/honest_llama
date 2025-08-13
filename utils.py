@@ -1143,3 +1143,29 @@ def get_com_directions(
     com_directions = np.array(com_directions)
 
     return com_directions
+
+
+def set_columns(tag, frame):
+    """Adds columns for new metrics or models to the dataframe of results"""
+
+    for calc in ["max", "diff"]:
+        col_name = "{0} lprob {1}".format(tag, calc)
+        if col_name not in frame.columns:
+            frame[col_name] = np.nan
+
+    for calc in ["scores-true", "scores-false"]:
+        col_name = "{0} lprob {1}".format(tag, calc)
+        if col_name not in frame.columns:
+            frame[col_name] = None
+
+    col_name = "{0} MC1".format(tag)
+    if col_name not in frame.columns:
+        frame[col_name] = np.nan
+
+    col_name = "{0} MC2".format(tag)
+    if col_name not in frame.columns:
+        frame[col_name] = np.nan
+
+    col_name = "{0} MC3".format(tag)
+    if col_name not in frame.columns:
+        frame[col_name] = np.nan
