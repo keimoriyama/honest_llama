@@ -4,28 +4,28 @@ import sys
 
 sys.path.insert(0, "TruthfulQA")
 
+import pickle
+import warnings
+from functools import partial
+
+import llama
+import numpy as np
+import openai
+import pandas as pd
+import sklearn
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import llama
-from datasets import load_dataset
-from tqdm import tqdm
-import numpy as np
-import llama
-import pandas as pd
-import warnings
-from einops import rearrange
-from transformers import AutoTokenizer, AutoModelForCausalLM
 from baukit import Trace, TraceDict
-import sklearn
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from datasets import load_dataset
+from einops import rearrange
 from sklearn.linear_model import LogisticRegression
-import pickle
-from functools import partial
-
-from truthfulqa import utilities, models, metrics
-import openai
-from truthfulqa.configs import BEST_COL, ANSWER_COL, INCORRECT_COL
+from sklearn.metrics import (accuracy_score, f1_score, precision_score,
+                             recall_score)
+from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from truthfulqa import metrics, models, utilities
+from truthfulqa.configs import ANSWER_COL, BEST_COL, INCORRECT_COL
 
 ENGINE_MAP = {
     # 'llama_7B': 'baffo32/decapoda-research-llama-7B-hf',
@@ -41,16 +41,12 @@ ENGINE_MAP = {
     "llama3_70B_instruct": "meta-llama/Meta-Llama-3-70B-Instruct",
 }
 
-from truthfulqa.utilities import (
-    format_prompt,
-    format_prompt_with_answer_strings,
-    split_multi_answer,
-    format_best,
-    find_start,
-)
-from truthfulqa.presets import preset_map, COMPARE_PRIMER
-from truthfulqa.models import find_subsequence, set_columns, MC_calcs
-from truthfulqa.evaluate import format_frame, data_to_dict
+from truthfulqa.evaluate import data_to_dict, format_frame
+from truthfulqa.models import MC_calcs, find_subsequence, set_columns
+from truthfulqa.presets import COMPARE_PRIMER, preset_map
+from truthfulqa.utilities import (find_start, format_best, format_prompt,
+                                  format_prompt_with_answer_strings,
+                                  split_multi_answer)
 
 
 def load_nq():
@@ -92,7 +88,6 @@ def format_truthfulqa_end_q(question, choice, rand_question):
 
 
 def tokenized_tqa(dataset, tokenizer):
-
     all_prompts = []
     all_labels = []
     for i in range(len(dataset)):
@@ -116,7 +111,6 @@ def tokenized_tqa(dataset, tokenizer):
 
 
 def tokenized_tqa_gen_end_q(dataset, tokenizer):
-
     all_prompts = []
     all_labels = []
     all_categories = []
@@ -146,7 +140,6 @@ def tokenized_tqa_gen_end_q(dataset, tokenizer):
 
 
 def tokenized_tqa_gen(dataset, tokenizer):
-
     all_prompts = []
     all_labels = []
     all_categories = []
@@ -204,7 +197,6 @@ def get_llama_activations_bau(model, prompt, device):
 
 
 def get_llama_logits(model, prompt, device):
-
     model.eval()
     with torch.no_grad():
         prompt = prompt.to(device)
@@ -366,7 +358,6 @@ def tqa_run_probs(
     with torch.no_grad():
         for idx in tqdm(frame.index, desc="tqa_run_probs"):
             if pd.isnull(frame.loc[idx, "{0} lprob max".format(tag)]):
-
                 # check that answer exists
                 if pd.isnull(frame.loc[idx, INCORRECT_COL]):
                     warnings.warn(
@@ -538,7 +529,6 @@ def run_ce_loss(
     intervention_fn=None,
     num_samples=100,
 ):
-
     # load owt text
     # note this is tokenized with llama tokenizer
     dataset = load_dataset("stas/openwebtext-10k")["train"]
@@ -570,7 +560,6 @@ def run_ce_loss(
     rand_idxs = np.random.choice(len(owt), num_samples, replace=False).tolist()
     with torch.no_grad():
         for i in tqdm(rand_idxs, desc="run_ce_loss"):
-
             input_ids = owt[i]["input_ids"][:, :128].to(device)
 
             with TraceDict(
@@ -593,7 +582,6 @@ def run_kl_wrt_orig(
     num_samples=100,
     separate_kl_device=None,
 ):
-
     assert (
         "llama" in model_key or "alpaca" in model_key or "vicuna" in model_key
     ), "model must be llama model"
@@ -704,7 +692,6 @@ def alt_tqa_evaluate(
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     for mdl in models.keys():
-
         # gpt-3
         if mdl in ["ada", "babbage", "curie", "davinci"]:  # gpt-3 models
             try:
@@ -831,7 +818,6 @@ def alt_tqa_evaluate(
                 print(err)
 
     for model_key in models.keys():
-
         for metric in metric_names:
             if metric == "mc":
                 continue
@@ -947,7 +933,6 @@ def train_probes(
     num_layers,
     num_heads,
 ):
-
     all_head_accs = []
     probes = []
 
@@ -989,7 +974,6 @@ def get_top_heads(
     num_to_intervene,
     use_random_dir=False,
 ):
-
     probes, all_head_accs_np = train_probes(
         seed,
         train_idxs,
@@ -1029,7 +1013,6 @@ def get_interventions_dict(
     use_random_dir,
     com_directions,
 ):
-
     interventions = {}
     for layer, head in top_heads:
         interventions[f"model.layers.{layer}.self_attn.head_out"] = []
@@ -1061,7 +1044,6 @@ def get_interventions_dict(
 
 
 def get_separated_activations(labels, head_wise_activations):
-
     # separate activations by question
     dataset = load_dataset("truthful_qa", "multiple_choice")["validation"]
     actual_labels = []
@@ -1094,7 +1076,6 @@ def get_com_directions(
     separated_head_wise_activations,
     separated_labels,
 ):
-
     com_directions = []
 
     for layer in tqdm(range(num_layers), desc="get_com_directions"):
