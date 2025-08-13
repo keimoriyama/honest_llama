@@ -1183,3 +1183,22 @@ def format_best(best_ans, close=True):
         if best[-1] != ".":
             best = best + "."
     return best
+
+
+def split_multi_answer(ans, sep=";", close=True):
+    """Splits string of all reference answers into a list of formatted answers"""
+
+    answers = ans.strip().split(sep)
+    split_answers = []
+    for a in answers:
+        a = a.strip()
+        if len(a):
+            if close:  # add a period after all answers
+                if a[-1] != ".":
+                    split_answers.append(a + ".")
+                else:
+                    split_answers.append(a)
+            else:
+                split_answers.append(a)
+
+    return split_answers
