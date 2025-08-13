@@ -8,6 +8,7 @@ dependencies = [
     "baukit",
     "datasets==3.6.0",
     "einops>=0.8.1",
+    "evaluate>=0.4.5",
     "ipdb>=0.13.13",
     "openai>=1.99.9",
     "pyvene>=0.1.7",

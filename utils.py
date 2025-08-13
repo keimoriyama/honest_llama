@@ -8,6 +8,7 @@ import logging
 import pickle
 import warnings
 
+import evaluate
 import numpy as np
 # import llama
 import pandas as pd
@@ -16,7 +17,7 @@ import torch
 import torch.nn.functional as F
 from baukit import TraceDict
 # import llama
-from datasets import load_dataset, load_metric
+from datasets import evaluate.load, load_dataset
 from rouge_score import rouge_scorer, scoring
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
@@ -1457,7 +1458,7 @@ def run_BLEURT(model_key, frame, cache_dir=None):
     model_key: Column name of model answers (populate before running metrics)
     """
 
-    bleurt = load_metric("bleurt", cache_dir=cache_dir)
+    bleurt = evaluate.load("bleurt", cache_dir=cache_dir)
 
     for calc in ["max", "diff", "acc"]:
         col_name = "{0} BLEURT {1}".format(model_key, calc)
