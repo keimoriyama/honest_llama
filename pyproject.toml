@@ -3,10 +3,10 @@ name = "honest-llama"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 dependencies = [
     "baukit",
-    "datasets>=3.1.0",
+    "datasets==3.6.0",
     "einops>=0.8.1",
     "ipdb>=0.13.13",
     "openai>=1.99.9",
