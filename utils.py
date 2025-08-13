@@ -17,7 +17,7 @@ import torch
 import torch.nn.functional as F
 from baukit import TraceDict
 # import llama
-from datasets import evaluate.load, load_dataset
+from datasets import load_dataset
 from rouge_score import rouge_scorer, scoring
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
