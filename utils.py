@@ -8,13 +8,11 @@ import pickle
 import warnings
 
 import numpy as np
-
 # import llama
 import pandas as pd
 import torch
 import torch.nn.functional as F
 from baukit import TraceDict
-
 # import llama
 from datasets import load_dataset
 from sklearn.linear_model import LogisticRegression
@@ -636,9 +634,9 @@ def run_kl_wrt_orig(
     separate_kl_device=None,
     orig_model=None,
 ):
-    assert "llama" in model_key or "alpaca" in model_key or "vicuna" in model_key, (
-        "model must be llama model"
-    )
+    assert (
+        "llama" in model_key or "alpaca" in model_key or "vicuna" in model_key
+    ), "model must be llama model"
 
     # load owt text
     # note this is tokenized with llama tokenizer
@@ -1175,3 +1173,13 @@ def set_columns(tag, frame):
     col_name = "{0} MC3".format(tag)
     if col_name not in frame.columns:
         frame[col_name] = np.nan
+
+
+def format_best(best_ans, close=True):
+    """Formats best answer to match format of reference answers"""
+
+    best = best_ans.strip()
+    if close:
+        if best[-1] != ".":
+            best = best + "."
+    return best
