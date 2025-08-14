@@ -324,11 +324,13 @@ def main():
         results.append(curr_fold_results)
 
     results = np.array(results)
-    final = results.mean(axis=0)
+    for result in results:
+        print(result)
+    # final = results.mean(axis=0)
 
-    print(
-        f"alpha: {args.alpha}, heads: {args.num_heads}, True*Info Score: {final[1] * final[0]}, True Score: {final[1]}, Info Score: {final[0]}, MC1 Score: {final[2]}, MC2 Score: {final[3]}, CE Loss: {final[4]}, KL wrt Original: {final[5]}"
-    )
+    # print(
+    #     f"alpha: {args.alpha}, heads: {args.num_heads}, True*Info Score: {final[1] * final[0]}, True Score: {final[1]}, Info Score: {final[0]}, MC1 Score: {final[2]}, MC2 Score: {final[3]}, CE Loss: {final[4]}, KL wrt Original: {final[5]}"
+    # )
 
 
 if __name__ == "__main__":
